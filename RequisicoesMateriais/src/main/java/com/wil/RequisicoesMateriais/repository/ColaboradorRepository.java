@@ -17,4 +17,6 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long>{
 
     @Transactional 
     void deleteByAtivoFalseAndDataDesativacaoBefore(LocalDateTime limite);
+
+    List<Colaborador> findByNome(String nome);
 }
