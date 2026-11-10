@@ -67,4 +67,26 @@ public class MaterialController {
         MaterialResponse material = materialService.alterarStatus(id, ativo);
         return ResponseEntity.ok(material);
     }
+
+    @GetMapping ("/nome")
+    public List<MaterialResponse> porNome(@RequestParam String nome) {
+        return materialService.porNome(nome);
+    }
+
+    @GetMapping ("/ativo")
+    public List<MaterialResponse> porAtivo() {
+  
+        return materialService.porAtivoTrue();
+    }
+
+    @GetMapping ("/inativo")
+    public List<MaterialResponse> porInativo() {
+  
+        return materialService.porAtivoFalse();
+    }
+
+    @GetMapping ("/estoque-baixo")
+    public List<MaterialResponse> porEstoqueBaixo(){
+        return materialService.porEstoqueBaixo();
+    }
 }

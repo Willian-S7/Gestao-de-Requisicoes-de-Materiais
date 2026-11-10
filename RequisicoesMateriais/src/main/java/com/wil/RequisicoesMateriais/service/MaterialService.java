@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.MaterialRequest;
+import com.wil.RequisicoesMateriais.dto.response.ColaboradorResponse;
 import com.wil.RequisicoesMateriais.dto.response.MaterialResponse;
 import com.wil.RequisicoesMateriais.model.Material;
 import com.wil.RequisicoesMateriais.repository.MaterialRepository;
@@ -80,4 +81,31 @@ public class MaterialService {
         materialRepository.delete(materialDelete);
     }
     
+    public List<MaterialResponse> porNome(String nome){
+        return materialRepository.findByNome(nome)
+        .stream()
+        .map(material -> toDTO(material))
+        .toList();
+    } 
+    
+        public List<MaterialResponse> porAtivoTrue(){
+        return materialRepository.findByAtivoTrue()
+        .stream()
+        .map(material -> toDTO(material))
+        .toList();
+    }
+
+    public List<MaterialResponse> porAtivoFalse(){
+        return materialRepository.findByAtivoFalse()
+        .stream()
+        .map(material -> toDTO(material))
+        .toList();
+    }
+    
+    public List<MaterialResponse> porEstoqueBaixo() {
+        return materialRepository.findMateriaisComEstoqueBaixo()
+        .stream()
+        .map(mat -> toDTO(mat))
+        .toList();
+    }
 }

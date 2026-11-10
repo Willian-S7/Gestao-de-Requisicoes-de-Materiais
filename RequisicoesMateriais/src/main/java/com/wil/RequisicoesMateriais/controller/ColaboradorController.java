@@ -21,7 +21,7 @@ import com.wil.RequisicoesMateriais.service.ColaboradorService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping ("/colaborador")
+@RequestMapping ("/colaboradores")
 public class ColaboradorController {
 
     private final ColaboradorService colaboradorService;
@@ -60,4 +60,19 @@ public class ColaboradorController {
         return ResponseEntity.ok(colaborador);
     }
     
+    @GetMapping ("/nome")
+    public List<ColaboradorResponse> porNome(@RequestParam String nome) {
+        return colaboradorService.porNome(nome);
+    }
+
+    @GetMapping ("/ativo")
+    public List<ColaboradorResponse> porAtivos() {
+        return colaboradorService.colaboradoresAtivos();
+    }
+
+    @GetMapping ("/inativo")
+    public List<ColaboradorResponse> porInativos() {
+        return colaboradorService.colaboradoresInativos();
+    }
+
 }

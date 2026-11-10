@@ -71,4 +71,25 @@ public class ColaboradorService {
         LocalDateTime limite = LocalDateTime.now().minusDays(30);
         colaboradorRepository.deleteByAtivoFalseAndDataDesativacaoBefore(limite);
     }
+
+    public List<ColaboradorResponse> colaboradoresAtivos(){
+        return colaboradorRepository.findByAtivoTrue()
+            .stream()
+            .map(colaborador -> toDTO(colaborador))
+            .toList();
+    }
+
+        public List<ColaboradorResponse> colaboradoresInativos(){
+        return colaboradorRepository.findByAtivoFalse()
+            .stream()
+            .map(colaborador -> toDTO(colaborador))
+            .toList();
+    }
+
+        public List<ColaboradorResponse> porNome(String nome){
+        return colaboradorRepository.findByNome(nome)
+            .stream()
+            .map(colaborador -> toDTO(colaborador))
+            .toList();
+    }
 }

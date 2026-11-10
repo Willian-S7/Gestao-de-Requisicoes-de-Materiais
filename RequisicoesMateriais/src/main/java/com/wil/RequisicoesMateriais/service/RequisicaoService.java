@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.ItemRequisicaoRequest;
+import com.wil.RequisicoesMateriais.dto.request.RequisicaoRequest;
+import com.wil.RequisicoesMateriais.dto.response.MaterialResponse;
 import com.wil.RequisicoesMateriais.dto.response.RequisicaoResponse;
 import com.wil.RequisicoesMateriais.model.Colaborador;
 import com.wil.RequisicoesMateriais.model.ItemRequisicao;
@@ -46,9 +48,9 @@ public class RequisicaoService {
     }
 
     @Transactional 
-    public RequisicaoResponse solicitarRequisicao (Long colaboradorId, List<ItemRequisicaoRequest> itens) {
+    public RequisicaoResponse solicitarRequisicao (RequisicaoRequest request) {
 
-        Colaborador colaborador = colaboradorService.colaboradorPorID(colaboradorId);
+        Colaborador colaborador = colaboradorService.colaboradorPorID(request.id());
 
         if(!colaborador.isAtivo()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Colaborador Inativado");
@@ -56,7 +58,7 @@ public class RequisicaoService {
 
         Requisicao novaRequisicao = new Requisicao();
 
-        for (ItemRequisicaoRequest itemRequisicao : itens) {
+        for (ItemRequisicaoRequest itemRequisicao : request.itens()) {
             ItemRequisicao item = itemRequisicaoService.criarItem(itemRequisicao, novaRequisicao);
 
             Material material = item.getMaterial();
@@ -132,5 +134,24 @@ public class RequisicaoService {
         requisicaoRepository.save(requisicao);
         return toDTO(requisicao);
     }
-    
+
+    public List<RequisicaoResponse> porStatus(StatusRequisicao status) {
+        return requisicaoRepository.findByStatus(status)
+        .stream()
+        .map(req -> toDTO(req))
+        .toList();
+    }
+    public List<RequisicaoResponse> porColadoradorId(Long colaboradorId) {
+        return requisicaoRepository.findByColadoradorId(colaboradorId)
+        .stream()
+        .map(req -> toDTO(req))
+        .toList();
+    } 
+
+    public List<RequisicaoResponse> porPeriodo(LocalDateTime dataInicio, LocalDateTime dataFinal) {
+        return requisicaoRepository.findByDataCriacaoBetween(dataInicio, dataFinal)
+        .stream()
+        .map(req -> toDTO(req))
+        .toList();
+    }
 }
