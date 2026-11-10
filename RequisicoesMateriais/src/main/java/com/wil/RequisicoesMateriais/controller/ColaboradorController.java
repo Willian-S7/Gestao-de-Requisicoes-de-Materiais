@@ -59,7 +59,7 @@ public class ColaboradorController {
         ColaboradorResponse colaborador = colaboradorService.desligarColaborador(id, status);
         return ResponseEntity.ok(colaborador);
     }
-    
+
     @GetMapping ("/nome")
     public List<ColaboradorResponse> porNome(@RequestParam String nome) {
         return colaboradorService.porNome(nome);
@@ -74,5 +74,4 @@ public class ColaboradorController {
     public List<ColaboradorResponse> porInativos() {
         return colaboradorService.colaboradoresInativos();
     }
-
 }

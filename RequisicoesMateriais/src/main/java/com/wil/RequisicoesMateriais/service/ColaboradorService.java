@@ -15,7 +15,7 @@ import com.wil.RequisicoesMateriais.repository.ColaboradorRepository;
 @Service 
 public class ColaboradorService {
 
-    private ColaboradorRepository colaboradorRepository;
+    private final ColaboradorRepository colaboradorRepository;
 
     public ColaboradorService (ColaboradorRepository colaboradorRepository){
         this.colaboradorRepository = colaboradorRepository;
