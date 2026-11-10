@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.MaterialRequest;
-import com.wil.RequisicoesMateriais.dto.response.ColaboradorResponse;
 import com.wil.RequisicoesMateriais.dto.response.MaterialResponse;
 import com.wil.RequisicoesMateriais.model.Material;
 import com.wil.RequisicoesMateriais.repository.MaterialRepository;

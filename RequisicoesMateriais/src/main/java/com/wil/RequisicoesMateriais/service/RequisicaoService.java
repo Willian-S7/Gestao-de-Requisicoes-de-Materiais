@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.ItemRequisicaoRequest;
 import com.wil.RequisicoesMateriais.dto.request.RequisicaoRequest;
-import com.wil.RequisicoesMateriais.dto.response.MaterialResponse;
 import com.wil.RequisicoesMateriais.dto.response.RequisicaoResponse;
 import com.wil.RequisicoesMateriais.model.Colaborador;
 import com.wil.RequisicoesMateriais.model.ItemRequisicao;
@@ -93,7 +92,7 @@ public class RequisicaoService {
         Requisicao requisicao = requisicaoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Requisição não encontrada"));
 
         if(requisicao.getStatus() != StatusRequisicao.APROVADA) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Somente requisições aprovadas podem ser atendidas");
+            throw new  ResponseStatusException(HttpStatus.BAD_REQUEST, "Somente requisições aprovadas podem ser atendidas");
         }
 
         requisicao.setStatus(StatusRequisicao.ATENDIDA);
@@ -115,7 +114,6 @@ public class RequisicaoService {
             Material material = req.getMaterial();
             material.setQuantidadeEstoque(material.getQuantidadeEstoque() + req.getQuantidade());
             materialRepository.save(material);
-            
         });
 
         requisicaoRepository.save(requisicao);
