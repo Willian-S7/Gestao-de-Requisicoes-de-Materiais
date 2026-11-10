@@ -23,6 +23,8 @@ public class Colaborador {
 
     private boolean ativo;
     
+    private LocalDateTime dataDesativacao;
+
     @Column(name = ("data_cadastro"))
     private LocalDateTime dataCadastro;
 
@@ -66,8 +68,15 @@ public class Colaborador {
         this.dataCadastro = dataCadastro;
     }
 
-    public Colaborador() {
+    public LocalDateTime getDataDesativacao() {
+        return dataDesativacao;
     }
 
+    public void setDataDesativacao(LocalDateTime dataDesativacao) {
+        this.dataDesativacao = dataDesativacao;
+    }
+   
+    public Colaborador() {
+    }
     
 }
