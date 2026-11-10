@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.ItemRequisicaoRequest;
 import com.wil.RequisicoesMateriais.dto.request.RequisicaoRequest;
-import com.wil.RequisicoesMateriais.dto.response.MaterialResponse;
 import com.wil.RequisicoesMateriais.dto.response.RequisicaoResponse;
 import com.wil.RequisicoesMateriais.model.Colaborador;
 import com.wil.RequisicoesMateriais.model.ItemRequisicao;
