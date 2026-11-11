@@ -42,7 +42,8 @@ public class ColaboradorService {
     }
 
     public Colaborador colaboradorPorID(Long id) {
-        return colaboradorPorID(id);
+        return colaboradorRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Colaborador não encontrado"));
     }
 
     public ColaboradorResponse buscarColaboradorResponse(Long id) {
@@ -54,12 +55,14 @@ public class ColaboradorService {
         Colaborador colaborador = colaboradorPorID(id);
         colaborador.setNome(request.nome());
         colaborador.setEmail(request.email());
-
+        colaboradorRepository.save(colaborador);
         return toDTO(colaborador);
     }
 
     public ColaboradorResponse desligarColaborador(Long id, boolean ativo){
+
         Colaborador colaborador = colaboradorPorID(id);
+        
         if (colaborador.isAtivo() == ativo){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status já está de acordo");
         }
