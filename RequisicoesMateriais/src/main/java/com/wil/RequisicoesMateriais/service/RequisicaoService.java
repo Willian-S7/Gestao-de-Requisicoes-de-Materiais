@@ -139,6 +139,7 @@ public class RequisicaoService {
         .map(req -> toDTO(req))
         .toList();
     }
+
     public List<RequisicaoResponse> porColadoradorId(Long colaboradorId) {
         return requisicaoRepository.findByColadoradorId(colaboradorId)
         .stream()
