@@ -21,6 +21,7 @@ import com.wil.RequisicoesMateriais.model.StatusRequisicao;
 import com.wil.RequisicoesMateriais.repository.MaterialRepository;
 import com.wil.RequisicoesMateriais.repository.RequisicaoRepository;
 
+
 @ExtendWith (MockitoExtension.class)
 class RequisicaoServiceTest {
 
@@ -69,7 +70,8 @@ class RequisicaoServiceTest {
         requisicao.setColaborador(colaborador);
 
         when (requisicaoRepository.findById(id)).thenReturn(Optional.of(requisicao));
-
+ 
+        
         RequisicaoResponse response = requisicaoService.cancelarRequisicao(id);
 
         assertEquals(StatusRequisicao.CANCELADA, response.status());
