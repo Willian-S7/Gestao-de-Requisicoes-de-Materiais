@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wil.RequisicoesMateriais.dto.request.ItemRequisicaoRequest;
+import com.wil.RequisicoesMateriais.dto.request.RequisicaoFiltro;
 import com.wil.RequisicoesMateriais.dto.request.RequisicaoRequest;
 import com.wil.RequisicoesMateriais.dto.response.RequisicaoResponse;
 import com.wil.RequisicoesMateriais.model.Colaborador;
@@ -18,6 +20,7 @@ import com.wil.RequisicoesMateriais.model.Requisicao;
 import com.wil.RequisicoesMateriais.model.StatusRequisicao;
 import com.wil.RequisicoesMateriais.repository.MaterialRepository;
 import com.wil.RequisicoesMateriais.repository.RequisicaoRepository;
+import com.wil.RequisicoesMateriais.specifications.RequisicoesSpecification;
 
 import jakarta.transaction.Transactional;
 
@@ -153,4 +156,52 @@ public class RequisicaoService {
         .map(req -> toDTO(req))
         .toList();
     }
+
+    public List<RequisicaoResponse> filtroGeral(RequisicaoFiltro filtro) {
+
+        Specification<Requisicao> specification = Specification.unrestricted();
+
+        if (filtro.colaboradorId() != null) {
+
+            specification = specification.and(RequisicoesSpecification.porColaboradorId(filtro.colaboradorId()));
+        }
+
+        if (filtro.colaboradorNome() != null) {
+            specification = specification.and(RequisicoesSpecification.porColaboradorNome(filtro.colaboradorNome()));
+        }
+
+        if (filtro.status() != null) {
+            specification = specification.and(RequisicoesSpecification.porStatus(filtro.status()));
+        }
+
+        if (filtro.dataInicio() != null && filtro.dataFim() != null && filtro.dataInicio().isAfter(filtro.dataFim())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data final não pode ser antes da data inicial");
+        }
+
+        if (filtro.dataInicio() != null) {
+            specification = specification.and(RequisicoesSpecification.aPartirDe(filtro.dataInicio()));
+        }
+
+        if (filtro.dataFim() != null) {
+            specification = specification.and(RequisicoesSpecification.ateAData(filtro.dataFim()));
+        }
+
+        if (filtro.valorMin() != null && filtro.valorMax() != null && filtro.valorMin().compareTo(filtro.valorMax()) > 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Valor minimo não pode ser maior que o máximo");
+        }
+
+        if (filtro.valorMin() != null) {
+            specification = specification.and(RequisicoesSpecification.apartirValorMin(filtro.valorMin()));
+        }
+
+        if (filtro.valorMax() != null) {
+            specification = specification.and(RequisicoesSpecification.ateValorMax(filtro.valorMax()));
+        }
+
+        List<Requisicao> requisicoes = requisicaoRepository.findAll(specification);
+
+        List<RequisicaoResponse> requisicoesDTO = requisicoes.stream().map(requisicao -> toDTO(requisicao)).toList();
+        return requisicoesDTO;
+    }
+
 }

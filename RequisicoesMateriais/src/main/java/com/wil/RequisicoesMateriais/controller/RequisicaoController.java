@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wil.RequisicoesMateriais.dto.request.RequisicaoFiltro;
 import com.wil.RequisicoesMateriais.dto.request.RequisicaoRequest;
 import com.wil.RequisicoesMateriais.dto.response.RequisicaoResponse;
 import com.wil.RequisicoesMateriais.model.StatusRequisicao;
@@ -69,5 +71,11 @@ public class RequisicaoController {
     public List<RequisicaoResponse> porPeriodo(@RequestParam @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
     @RequestParam @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
         return requisicaoService.porPeriodo(dataInicio, dataFinal);
+    }
+
+    @GetMapping ("/filtro-geral")
+    public ResponseEntity<List<RequisicaoResponse>> filtroGeral(@ModelAttribute @Valid RequisicaoFiltro filtro) {
+        List<RequisicaoResponse> filtrado = requisicaoService.filtroGeral(filtro);
+        return ResponseEntity.ok(filtrado);
     }
 }
